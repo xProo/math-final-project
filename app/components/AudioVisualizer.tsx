@@ -26,8 +26,10 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
+    const dataArray = Array.from(audioData);
+
     const x = d3.scaleLinear()
-      .domain([0, audioData.length - 1])
+      .domain([0, dataArray.length - 1])
       .range([0, innerWidth]);
 
     const y = d3.scaleLinear()
@@ -35,14 +37,12 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
       .range([innerHeight, 0]);
 
     const line = d3.line<number>()
-      .x((d, i) => x(i))
+      .x((_, i) => x(i))
       .y(d => y(d))
       .curve(d3.curveBasis);
 
-    const pathData = Array.from(audioData);
-
     svg.append('path')
-      .datum(pathData)
+      .datum(dataArray)
       .attr('fill', 'none')
       .attr('stroke', '#3b82f6')
       .attr('stroke-width', 2)
