@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface SpeechRecognition extends EventTarget {
   continuous: boolean;
@@ -35,11 +35,15 @@ declare global {
 
 interface VoiceRecognitionProps {
   onCommand: (command: string) => void;
+  onAudioData?: (data: Float32Array) => void;
 }
 
-const VoiceRecognition: React.FC<VoiceRecognitionProps> = ({ onCommand }) => {
+const VoiceRecognition: React.FC<VoiceRecognitionProps> = ({ onCommand, onAudioData }) => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -81,6 +85,35 @@ const VoiceRecognition: React.FC<VoiceRecognitionProps> = ({ onCommand }) => {
 
   const toggleListening = () => {
     setIsListening(!isListening);
+  };
+
+  const startAudioCapture = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      
+      audioContextRef.current = new AudioContext();
+      const source = audioContextRef.current.createMediaStreamSource(stream);
+      
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      analyserRef.current.fftSize = 2048;
+      source.connect(analyserRef.current);
+
+      const bufferLength = analyserRef.current.frequencyBinCount;
+      const dataArray = new Float32Array(bufferLength);
+
+      const updateAudioData = () => {
+        if (!isListening || !analyserRef.current) return;
+        
+        analyserRef.current.getFloatTimeDomainData(dataArray);
+        onAudioData?.(new Float32Array(dataArray));
+        requestAnimationFrame(updateAudioData);
+      };
+
+      updateAudioData();
+    } catch (error) {
+      console.error('Erreur lors de la capture audio:', error);
+    }
   };
 
   return (
