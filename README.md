@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Assistant Vocal avec Traitement du Signal
 
-## Getting Started
+Ce projet est une application web interactive qui utilise la reconnaissance vocale et le traitement du signal pour créer une interface homme-machine basée sur la voix.
 
-First, run the development server:
+## Fonctionnalités
 
+- Reconnaissance vocale en temps réel
+- Traitement du signal audio avec FFT et filtres
+- Visualisation du signal audio brut et traité
+- Navigation par commandes vocales
+- Interface de domotique simulée
+- Gestion des contacts
+
+## Technologies utilisées
+
+- Next.js 14
+- TypeScript
+- TensorFlow.js
+- Web Speech API
+- D3.js
+- Tailwind CSS
+
+## Installation
+
+1. Clonez le repository :
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [URL_DU_REPO]
+cd [NOM_DU_PROJET]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Installez les dépendances :
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Lancez le serveur de développement :
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
-## Learn More
+## Commandes vocales disponibles
 
-To learn more about Next.js, take a look at the following resources:
+### Navigation
+- "Ouvre la page contacts"
+- "Ouvre la page domotique"
+- "Retour" (pour revenir à l'accueil)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Domotique
+- "Allume la lumière du salon"
+- "Éteins la lumière de la cuisine"
+- "Allume le chauffage"
+- "Éteins la télévision"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure du projet
 
-## Deploy on Vercel
+```
+/app
+  /components
+    - VoiceRecognition.tsx
+    - AudioVisualizer.tsx
+  /lib
+    - audioProcessing.ts
+  /pages
+    - index.tsx
+    - contacts.tsx
+    - domotique.tsx
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contribution
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou à soumettre une pull request.
+
+## Licence
+
+MIT
